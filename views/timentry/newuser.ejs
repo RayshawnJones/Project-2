@@ -2,25 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-
-  <title>Time tracking dashboard </title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./public/stylesheet/style.css">
-  <script src="./server.js" type="module"></script>
+  <title>New User Created</title>
 </head>
 <body>
+  <h1>Welcome, <%= user.name %></h1>
+  <p>Your account has been successfully created.</p>
 
   <div class="container">
     <div class="card card--avatar">
       <div class="card--avatar-top card--lg">
         
         <h1>
-          <span>Report for </span><br>
+          <span>Report for <%= user.name%> </span><br>
           
         </h1>
       </div>

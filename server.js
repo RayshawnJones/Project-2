@@ -8,17 +8,11 @@ const mongoose = require("mongoose");
 const { JSDOM } = require("jsdom");
 const methodOverride = require("method-override");
 const morgan = require("morgan");
-const path = require("path");
-JSDOM.config();
 const { render } = require("ejs");
-render.config();
 
 // Set up body parser middleware to handle the data in POST and PUT requests
 app.use(express.json());  // To support JSON-encoded bodies
-app.use(express.urlencoded({ extended: true }));  // To support URL-encoded bodies
-app.use(express.urlencoded({ extended: false }));
-app.use(methodOverride("_method"));
-// app.use(morgan('dev'));
+
 
 // new code below this line
 app.use(express.static(path.join(__dirname, "public")));
@@ -27,6 +21,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", async (req, res) => {
   res.render("index.ejs");
 });
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard', { userName: `${userName}` }); // Pass `userName` to the EJS template
+  });
 mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('connected', () => {
@@ -54,6 +52,19 @@ app.post('/timecards', async (req, res) => {
     res.status(201).send('Timecard created');
 });
 
+app.post('/create-user', async (req, res) => {
+    try {
+      const newUser = await User.create({
+        name: req.body.name,
+        email: req.body.email,
+        // other user fields
+      });
+      res.render('newuser', { user: newUser });
+    } catch (error) {
+      res.status(500).send("Error creating user");
+    }
+  });
+  
 // PUT - Update an existing timecard
 app.put('/timecards/:id', async (req, res) => {
     const timecardId = req.params.id;
@@ -62,6 +73,11 @@ app.put('/timecards/:id', async (req, res) => {
     res.send(`Timecard ${timecardId} updated`);
 });
 
+app.put('/timecards/:id', async (req, res) => {
+    const timecardId = req.params.id;
+    // Timecard update logic
+  });
+  
 // DELETE - Remove a timecard
 app.delete('/timecards/:id', async(req, res) => {
     const timecardId = req.params.id;
@@ -70,12 +86,9 @@ app.delete('/timecards/:id', async(req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
 
 mongoose.connection.on("connected", () => {
-  console.log(`MongoDB ${mongoose.connection.name} connected`);
+    console.log(`MongoDB ${mongoose.connection.name} connected`);
 });
 
 app.listen(3000)

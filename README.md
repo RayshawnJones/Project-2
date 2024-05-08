@@ -9,8 +9,6 @@
   - [What I learned](#what-i-learned)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
 
 
 
@@ -46,7 +44,7 @@ Users should be able to:
 - Flexbox
 - CSS Grid
 - Mobile-first workflow
-- [React](https://reactjs.org/) - JS library
+- [Morgan]
 - [Next.js](https://nextjs.org/) - React framework
 - [Styled Components](https://styled-components.com/) - For styles
 
@@ -56,29 +54,18 @@ Users should be able to:
 
 To see how you can add code snippets, see below:
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
-}
-```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
-```
+
 
 ### Continued development
 
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
+** Note: Further build of the time-tracking app to be utilized for multiple users and inputs.Would like to deploy using AWS  **
 
 ### Useful resources
 
 - [Resource 1](https://www.google.com/search?client=safari&rls=en&q=w3schools+css+%3Aroot&ie=UTF-8&oe=UTF-8) - This helped me for the :root css selector. 
 - [Resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
+- [Resource 3](https://www.giraffeacademy.com/web-development/css/) - Used for creating CSS Selectors and also used a link for MongoDB within that website
 
-- [Resource 3](https://www.giraffeacademy.com/web-development/css/) - Used for creating CSS Selectors
+- [Resource 4](https:/figma.com) - Used for creating CSS Selectors
 
