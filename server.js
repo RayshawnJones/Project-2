@@ -1,94 +1,79 @@
-const express = require("express");
-const path = require("path");
-const fs = require('fs');
-const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
-const mongoose = require("mongoose");
-const { JSDOM } = require("jsdom");
-const methodOverride = require("method-override");
-const morgan = require("morgan");
-const { render } = require("ejs");
+const express = require('express');
+const app = express();
+const path = require('path');
+const mongoose = require('mongoose');
+const methodOverride = require('method-override');
+const morgan = require('morgan')
 
-// Set up body parser middleware to handle the data in POST and PUT requests
-app.use(express.json());  // To support JSON-encoded bodies
-
-
-// new code below this line
-app.use(express.static(path.join(__dirname, "public")));
-
-// new code above this line
-app.get("/", async (req, res) => {
-  res.render("index.ejs");
-});
-
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard', { userName: `${userName}` }); // Pass `userName` to the EJS template
-  });
 mongoose.connect(process.env.MONGODB_URI);
 
 mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+const Plant = require('./models/plant.js');
 
-// GET - Read Data
-app.get('/data', async (req, res) => {
-    const dataPath = path.join(__dirname, 'views', 'data.json');
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        if (err) {
-            res.status(404).send('Data not found');
-            return;
-        }
-        res.json(JSON.parse(data));
-    });
+app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride('_method'));
+// app.use(morgan('dev'));
+app.set("views", path.join(__dirname, "views"));
+
+app.get('/', async (req, res) => {
+  res.render('index.ejs');
 });
 
-// POST - Create a new timecard entry
-app.post('/timecards', async (req, res) => {
-    // Simulated database insert function
-    const newData = req.body; // assuming body has timecard data
-    console.log("Creating new timecard:", newData);
-    res.status(201).send('Timecard created');
+app.get('/plants/new', (req, res) => {
+  res.render('plants/new.ejs');
 });
 
-app.post('/create-user', async (req, res) => {
-    try {
-      const newUser = await User.create({
-        name: req.body.name,
-        email: req.body.email,
-        // other user fields
-      });
-      res.render('newuser', { user: newUser });
-    } catch (error) {
-      res.status(500).send("Error creating user");
-    }
+app.post('/plants', async (req, res) => {
+  if (req.body.isReadyToChoose === 'on') {
+    req.body.isReadyToChoose = true;
+  } else {
+    req.body.isReadyToChoose = false;
+  }
+  await Plants.create(req.body);
+  res.redirect('/plants');
+});
+
+app.get('/plants', async (req, res) => {
+  const foundPlants = await Plant.find();
+  res.render('index.ejs', {
+    plants: foundPlants,
   });
-  
-// PUT - Update an existing timecard
-app.put('/timecards/:id', async (req, res) => {
-    const timecardId = req.params.id;
-    const updatedData = req.body;
-    console.log(`Updating timecard ${timecardId} with data:`, updatedData);
-    res.send(`Timecard ${timecardId} updated`);
 });
 
-app.put('/timecards/:id', async (req, res) => {
-    const timecardId = req.params.id;
-    // Timecard update logic
+app.get('/plants/:plantId', async (req, res) => {
+  const foundPlant = await Plant.findById(req.params.plantId);
+  res.render('plants/show.ejs', {
+    plant: foundPlant,
   });
-  
-// DELETE - Remove a timecard
-app.delete('/timecards/:id', async(req, res) => {
-    const timecardId = req.params.id;
-    console.log(`Deleting timecard ${timecardId}`);
-    res.send(`Timecard ${timecardId} deleted`);
 });
 
-// Start the server
-
-mongoose.connection.on("connected", () => {
-    console.log(`MongoDB ${mongoose.connection.name} connected`);
+app.delete('/plants/:plantId', async (req, res) => {
+  await Plant.findByIdAndDelete(req.params.plantId);
+  res.redirect('/plants');
 });
 
-app.listen(3000)
+app.get('/plants/:plantId/edit', async (req, res) => {
+  const foundPlant = await Plant.findById(req.params.plantId);
+  res.render('plants/edit.ejs', {
+    plant: foundPlant,
+  });
+});
+
+app.put('/plants/:plantId', async (req, res) => {
+  if (req.body.isReadyToChoose === 'on') {
+    req.body.isReadyToChoose = true;
+  } else {
+    req.body.isReadyToChoose = false;
+  }
+  await Plant.findByIdAndUpdate(req.params.plantId, req.body);
+  res.redirect(`/plants/${req.params.plantId}`);
+});
+
+app.listen(3000, () => {
+  console.log('The express app is ready!');
+});

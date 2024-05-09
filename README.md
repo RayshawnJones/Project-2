@@ -1,4 +1,4 @@
-- Technical Specification Document for Time Tracking Dashboard
+- Plant app
 
 ## Table of contents
 
@@ -14,15 +14,7 @@
 
 ## Overview
 
-Develop a responsive Time Tracking Dashboard that allows users to:
-Adaptively view the layout according to their device’s screen size.
-Experience interactive hover states on all elements.
-Toggle between Daily, Weekly, and Monthly statistics.
-Expected Behavior
-Display text indicating the time spent in the previous period, dynamically changing based on the selected timeframe:
-Daily: “Yesterday - X hrs”
-Weekly: “Last Week - X hrs”
-Monthly: “Last Month - X hrs”
+ create a complete full-stack application using Node.js, Express, EJS, and MongoDB. Your application will center around a resource or schema of your choosing, for which you will implement full Create, Read, Update, and Delete (CRUD) functionalities.
 
 ### The challenge
 

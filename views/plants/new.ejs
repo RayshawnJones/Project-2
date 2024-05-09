@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create a Plants</title>
+</head>
+<body>
+  <h1>Create a New Plants!</h1>
+  <form action="/plants" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" />
+    <label for="isReadyToChoose">Ready to plant?</label>
+    <input type="checkbox" name="isReadyToChoose" id="isReadyToChoose" />
+    <button type="submit">Add plants</button>
+  </form>
+  <a href="/plants/">Back to plants</a>
+</body>
+</html>
